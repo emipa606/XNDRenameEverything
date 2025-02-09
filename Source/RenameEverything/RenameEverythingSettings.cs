@@ -1,91 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using Verse;
-using RimWorld;
 
-namespace RenameEverything
+namespace RenameEverything;
+
+public class RenameEverythingSettings : ModSettings
 {
+    public static bool showNameOnGround = true;
 
-    public class RenameEverythingSettings : ModSettings
+    public static bool appendCachedLabel;
+
+    public static bool onlyAppendInThingHolder = true;
+
+    public static bool pawnWeaponRenameGizmos = true;
+
+    public static bool dualWieldInspectString = true;
+
+    public void DoWindowContents(Rect wrect)
     {
-
-        public static bool showNameOnGround = true;
-        public static bool appendCachedLabel = false;
-        public static bool onlyAppendInThingHolder = true;
-        public static bool pawnWeaponRenameGizmos = true;
-
-        public static bool dualWieldInspectString = true;
-
-        public void DoWindowContents(Rect wrect)
+        var listing_Standard = new Listing_Standard();
+        var color = GUI.color;
+        listing_Standard.Begin(wrect);
+        GUI.color = color;
+        Text.Font = GameFont.Small;
+        Text.Anchor = TextAnchor.UpperLeft;
+        listing_Standard.Gap();
+        listing_Standard.CheckboxLabeled("RenameEverything.ShowNameOnGround".Translate(), ref showNameOnGround,
+            "RenameEverything.ShowNameOnGround_Tooltip".Translate());
+        listing_Standard.Gap();
+        listing_Standard.CheckboxLabeled("RenameEverything.AppendCachedLabel".Translate(), ref appendCachedLabel,
+            "RenameEverything.AppendCachedLabel_Tooltip".Translate());
+        if (!appendCachedLabel)
         {
-            var options = new Listing_Standard();
-            var defaultColor = GUI.color;
-            options.Begin(wrect);
-            GUI.color = defaultColor;
-            Text.Font = GameFont.Small;
-            Text.Anchor = TextAnchor.UpperLeft;
-
-            // Show name when on the ground
-            options.Gap();
-            options.CheckboxLabeled("RenameEverything.ShowNameOnGround".Translate(), ref showNameOnGround, "RenameEverything.ShowNameOnGround_Tooltip".Translate());
-
-            // Append original label to an object's name
-            options.Gap();
-            options.CheckboxLabeled("RenameEverything.AppendCachedLabel".Translate(), ref appendCachedLabel, "RenameEverything.AppendCachedLabel_Tooltip".Translate());
-
-            // Only append when equipped (grey out if appendCachedLabel is false)
-            if (!appendCachedLabel)
-                GUI.color = Color.grey;
-            options.Gap();
-            options.CheckboxLabeled("RenameEverything.AppendCachedLabelInThingHolder".Translate(), ref onlyAppendInThingHolder, "RenameEverything.AppendCachedLabelInThingHolder_Tooltip".Translate());
-            GUI.color = defaultColor;
-
-            // Show equipment renaming buttons on pawns
-            options.Gap();
-            options.CheckboxLabeled("RenameEverything.ShowRenameGizmosOnPawns".Translate(), ref pawnWeaponRenameGizmos, "RenameEverything.ShowRenameGizmosOnPawns_Tooltip".Translate());
-
-            #region Dual Wield
-            // Dual Wield integration
-            Text.Font = GameFont.Medium;
-            options.Gap(24);
-            options.Label("RenameEverything.DualWieldIntegration".Translate());
-            Text.Font = GameFont.Small;
-
-            // Dual Wield not active
-            if (!ModCompatibilityCheck.DualWield)
-            {
-                GUI.color = Color.grey;
-                options.Label("RenameEverything.DualWieldNotActive".Translate());
-                GUI.color = defaultColor;
-            }
-
-            else
-            {
-                // Show both weapon names when dual wielding
-                options.Gap();
-                options.CheckboxLabeled("RenameEverything.ShowBothWeaponNamesDualWield".Translate(), ref dualWieldInspectString, "RenameEverything.ShowBothWeaponNamesDualWield_Tooltip".Translate());
-            }
-            #endregion
-
-            // Finish
-            options.End();
-            Mod.GetSettings<RenameEverythingSettings>().Write();
-
+            GUI.color = Color.grey;
         }
 
-        public override void ExposeData()
+        listing_Standard.Gap();
+        listing_Standard.CheckboxLabeled("RenameEverything.AppendCachedLabelInThingHolder".Translate(),
+            ref onlyAppendInThingHolder, "RenameEverything.AppendCachedLabelInThingHolder_Tooltip".Translate());
+        GUI.color = color;
+        listing_Standard.Gap();
+        listing_Standard.CheckboxLabeled("RenameEverything.ShowRenameGizmosOnPawns".Translate(),
+            ref pawnWeaponRenameGizmos, "RenameEverything.ShowRenameGizmosOnPawns_Tooltip".Translate());
+        Text.Font = GameFont.Medium;
+        listing_Standard.Gap(24f);
+        listing_Standard.Label("RenameEverything.DualWieldIntegration".Translate());
+        Text.Font = GameFont.Small;
+        if (!ModCompatibilityCheck.DualWield)
         {
-            Scribe_Values.Look(ref showNameOnGround, "showNameOnGround", true);
-            Scribe_Values.Look(ref appendCachedLabel, "appendCachedLabel", false);
-            Scribe_Values.Look(ref onlyAppendInThingHolder, "onlyAppendInThingHolder", true);
-            Scribe_Values.Look(ref pawnWeaponRenameGizmos, "pawnWeaponRenameGizmos", true);
-
-            Scribe_Values.Look(ref dualWieldInspectString, "dualWieldInspectString", true);
+            GUI.color = Color.grey;
+            listing_Standard.Label("RenameEverything.DualWieldNotActive".Translate());
+            GUI.color = color;
+        }
+        else
+        {
+            listing_Standard.Gap();
+            listing_Standard.CheckboxLabeled("RenameEverything.ShowBothWeaponNamesDualWield".Translate(),
+                ref dualWieldInspectString, "RenameEverything.ShowBothWeaponNamesDualWield_Tooltip".Translate());
         }
 
+        if (RenameEverything.currentVersion != null)
+        {
+            listing_Standard.Gap();
+            GUI.contentColor = Color.gray;
+            listing_Standard.Label("RenameEverything.CurrentModVersion".Translate(RenameEverything.currentVersion));
+            GUI.contentColor = Color.white;
+        }
+
+        listing_Standard.End();
+        Mod.GetSettings<RenameEverythingSettings>().Write();
     }
 
+    public override void ExposeData()
+    {
+        Scribe_Values.Look(ref showNameOnGround, "showNameOnGround", true);
+        Scribe_Values.Look(ref appendCachedLabel, "appendCachedLabel");
+        Scribe_Values.Look(ref onlyAppendInThingHolder, "onlyAppendInThingHolder", true);
+        Scribe_Values.Look(ref pawnWeaponRenameGizmos, "pawnWeaponRenameGizmos", true);
+        Scribe_Values.Look(ref dualWieldInspectString, "dualWieldInspectString", true);
+    }
 }
