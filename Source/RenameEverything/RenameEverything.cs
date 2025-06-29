@@ -8,13 +8,13 @@ namespace RenameEverything;
 public class RenameEverything : Mod
 {
     public static Harmony Harmony;
-    public static string currentVersion;
+    public static string CurrentVersion;
     public RenameEverythingSettings settings;
 
     public RenameEverything(ModContentPack content)
         : base(content)
     {
-        currentVersion = VersionFromManifest.GetVersionFromModMetaData(content.ModMetaData);
+        CurrentVersion = VersionFromManifest.GetVersionFromModMetaData(content.ModMetaData);
         GetSettings<RenameEverythingSettings>();
         Harmony = new Harmony("XeoNovaDan.RenameEverything");
     }

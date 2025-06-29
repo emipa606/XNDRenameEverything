@@ -14,21 +14,13 @@ public abstract class Command_RenamablesFromPawn : Command
 
     protected string FloatMenuOptionLabel(Pawn pawn, Thing renamableThing)
     {
-        if (allPawnRenamables.Count > 1)
-        {
-            return $"{pawn.LabelShort}: {renamableThing.LabelCap}";
-        }
-
-        return renamableThing.LabelCap;
+        return allPawnRenamables.Count > 1 ? $"{pawn.LabelShort}: {renamableThing.LabelCap}" : renamableThing.LabelCap;
     }
 
     public override void ProcessInput(Event ev)
     {
         base.ProcessInput(ev);
-        if (allPawnRenamables == null)
-        {
-            allPawnRenamables = [];
-        }
+        allPawnRenamables ??= [];
 
         allPawnRenamables.Add(pawnRenamables);
         var options = DoFloatMenuOptions().ToList();
@@ -38,10 +30,7 @@ public abstract class Command_RenamablesFromPawn : Command
     public override bool InheritInteractionsFrom(Gizmo other)
     {
         var command_RenamablesFromPawn = (Command_RenamablesFromPawn)other;
-        if (allPawnRenamables == null)
-        {
-            allPawnRenamables = [];
-        }
+        allPawnRenamables ??= [];
 
         allPawnRenamables.Add(command_RenamablesFromPawn.pawnRenamables);
         return false;

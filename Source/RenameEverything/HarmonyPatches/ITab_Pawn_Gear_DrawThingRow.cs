@@ -22,7 +22,7 @@ public static class ITab_Pawn_Gear_DrawThingRow
             typeof(Thing)
         ]);
         var doRenameFloatMenuButtonInfo =
-            AccessTools.Method(typeof(ITab_Pawn_Gear_DrawThingRow), nameof(DoRenameFloatMenuButton));
+            AccessTools.Method(typeof(ITab_Pawn_Gear_DrawThingRow), nameof(doRenameFloatMenuButton));
         foreach (var instruction in instructionList)
         {
             var codeInstruction = instruction;
@@ -42,13 +42,13 @@ public static class ITab_Pawn_Gear_DrawThingRow
                 if (wordWraps % 2 == 0)
                 {
                     codeInstruction =
-                        new CodeInstruction(OpCodes.Call, RenameUtility.ChangeGUIColourPostLabelDraw_Info);
+                        new CodeInstruction(OpCodes.Call, RenameUtility.ChangeGUIColourPostLabelDrawInfo);
                 }
                 else
                 {
                     yield return new CodeInstruction(OpCodes.Ldarg_3);
                     codeInstruction = new CodeInstruction(OpCodes.Call,
-                        RenameUtility.ChangeGUIColourPreLabelDraw_Thing_Info);
+                        RenameUtility.ChangeGUIColourPreLabelDrawThingInfo);
                 }
             }
 
@@ -56,7 +56,7 @@ public static class ITab_Pawn_Gear_DrawThingRow
         }
     }
 
-    private static void DoRenameFloatMenuButton(ref Rect rect, ref float y, Thing thing)
+    private static void doRenameFloatMenuButton(ref Rect rect, ref float y, Thing thing)
     {
         rect.width -= 24f;
         var compRenamable = thing.TryGetComp<CompRenamable>();

@@ -17,7 +17,8 @@ public static class InspectPaneUtility_AdjustedLabelFor
         var clearCount = instructionList.Count(i => i.opcode == OpCodes.Callvirt && i.operand == clearInfo);
         var clearCounts = 0;
         var updateCachedSelectedThings =
-            AccessTools.Method(typeof(InspectPaneUtility_AdjustedLabelFor), nameof(UpdateCachedSelectedThings));
+            AccessTools.Method(typeof(InspectPaneUtility_AdjustedLabelFor),
+                nameof(InspectPaneUtility_AdjustedLabelFor.updateCachedSelectedThings));
         for (var j = 0; j < instructionList.Count; j++)
         {
             var instruction = instructionList[j];
@@ -35,7 +36,7 @@ public static class InspectPaneUtility_AdjustedLabelFor
         }
     }
 
-    private static void UpdateCachedSelectedThings(List<Thing> selectedThings)
+    private static void updateCachedSelectedThings(List<Thing> selectedThings)
     {
         InspectPaneUtility_InspectPaneOnGUI.cachedSelectedThings.Clear();
         InspectPaneUtility_InspectPaneOnGUI.cachedSelectedThings.AddRange(selectedThings.ToArray());

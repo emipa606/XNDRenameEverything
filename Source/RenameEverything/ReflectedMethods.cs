@@ -7,7 +7,7 @@ namespace RenameEverything;
 [StaticConstructorOnStartup]
 public static class ReflectedMethods
 {
-    public delegate V FuncOut<in T, U, out V>(T input, out U output);
+    public delegate TV FuncOut<in T, TU, out TV>(T input, out TU output);
 
     public static readonly FuncOut<Pawn_EquipmentTracker, ThingWithComps, bool> TryGetOffHandEquipment;
 

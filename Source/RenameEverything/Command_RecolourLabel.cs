@@ -12,11 +12,11 @@ public class Command_RecolourLabel : Command_Renamable
     {
         base.ProcessInput(ev);
         Find.WindowStack.Add(new Dialog_ColourPicker(renamables[0].labelColour,
-            delegate(Color c) { Callback(c, renamables); }));
+            delegate(Color c) { callback(c, renamables); }));
     }
 
-    [SyncMethod()]
-    private void Callback(Color c, List<CompRenamable> renamableCompList)
+    [SyncMethod]
+    private static void callback(Color c, List<CompRenamable> renamableCompList)
     {
         renamableCompList.ForEach(delegate(CompRenamable r) { r.labelColour = c; });
     }

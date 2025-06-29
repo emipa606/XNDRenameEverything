@@ -12,16 +12,16 @@ public static class Patches
 
         if (ModCompatibilityCheck.RPGStyleInventory || ModCompatibilityCheck.RPGStyleInventoryCE)
         {
-            var sandy_Detailed_RPG_Inventory_Type =
+            var sandyDetailedRpgInventoryType =
                 GenTypes.GetTypeInAnyAssembly("Sandy_Detailed_RPG_Inventory.Sandy_Detailed_RPG_GearTab",
                     "Sandy_Detailed_RPG_Inventory");
-            if (sandy_Detailed_RPG_Inventory_Type != null)
+            if (sandyDetailedRpgInventoryType != null)
             {
-                RenameEverything.Harmony.Patch(AccessTools.Method(sandy_Detailed_RPG_Inventory_Type, "DrawThingRow"),
+                RenameEverything.Harmony.Patch(AccessTools.Method(sandyDetailedRpgInventoryType, "DrawThingRow"),
                     null, null,
                     new HarmonyMethod(typeof(ITab_Pawn_Gear_DrawThingRow),
                         nameof(ITab_Pawn_Gear_DrawThingRow.Transpiler)));
-                RenameEverything.Harmony.Patch(AccessTools.Method(sandy_Detailed_RPG_Inventory_Type, "DrawThingRow1"),
+                RenameEverything.Harmony.Patch(AccessTools.Method(sandyDetailedRpgInventoryType, "DrawThingRow1"),
                     null, null,
                     new HarmonyMethod(
                         typeof(RPGStyleInventory_Sandy_Detailed_RPG_GearTab),

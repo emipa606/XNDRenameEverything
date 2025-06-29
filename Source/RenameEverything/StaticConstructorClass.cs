@@ -13,10 +13,7 @@ public static class StaticConstructorClass
         foreach (var item in DefDatabase<ThingDef>.AllDefs.Where(t =>
                      typeof(ThingWithComps).IsAssignableFrom(t.thingClass)))
         {
-            if (item.comps == null)
-            {
-                item.comps = [];
-            }
+            item.comps ??= [];
 
             if (item.IsWeapon)
             {

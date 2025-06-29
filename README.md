@@ -1,4 +1,4 @@
-# [[XND] Rename Everything! (Continued)]()
+# [[XND] Rename Everything! (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=3424422876)
 
 ![Image](https://i.imgur.com/buuPQel.png)
 
@@ -46,9 +46,6 @@ Marnador for their fantastic RimWorld-style font
 
 # **Links**
 
-GitHub releases: https://github.com/XeoNovaDan/RenameEverything/releases
-Source code: https://github.com/XeoNovaDan/RenameEverything
-
 Fluffy's colour picker: https://github.com/FluffierThanThou/ColourPicker
 
 ![Image](https://i.imgur.com/PwoNOj4.png)
@@ -63,4 +60,6 @@ Fluffy's colour picker: https://github.com/FluffierThanThou/ColourPicker
 -  If you have the solution for a problem, please post it to the GitHub repository.
 -  Use [RimSort](https://github.com/RimSort/RimSort/releases/latest) to sort your mods
 
+ 
 
+[![Image](https://img.shields.io/github/v/release/emipa606/XNDRenameEverything?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/3424422876) | tags: object renaming

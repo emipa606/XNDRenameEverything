@@ -16,13 +16,13 @@ public static class RenameUtility
 
     private static Color cachedGUIColour;
 
-    public static MethodInfo ChangeGUIColourPreLabelDraw_IEnumerableThing_Info =>
+    public static MethodInfo ChangeGUIColourPreLabelDrawIEnumerableThingInfo =>
         AccessTools.Method(typeof(RenameUtility), nameof(ChangeGUIColourPreLabelDraw), [typeof(IEnumerable<Thing>)]);
 
-    public static MethodInfo ChangeGUIColourPreLabelDraw_Thing_Info => AccessTools.Method(typeof(RenameUtility),
+    public static MethodInfo ChangeGUIColourPreLabelDrawThingInfo => AccessTools.Method(typeof(RenameUtility),
         nameof(ChangeGUIColourPreLabelDraw), [typeof(Thing)]);
 
-    public static MethodInfo ChangeGUIColourPostLabelDraw_Info =>
+    public static MethodInfo ChangeGUIColourPostLabelDrawInfo =>
         AccessTools.Method(typeof(RenameUtility), nameof(ChangeGUIColourPostLabelDraw));
 
     public static IEnumerable<Gizmo> GetRenamableCompGizmos(CompRenamable renamableComp)
@@ -56,7 +56,7 @@ public static class RenameUtility
                 defaultDesc = "RenameEverything.AllowMerging_Description".Translate(),
                 icon = TexButton.AllowMergingTex,
                 isActive = () => renamableComp.allowMerge,
-                toggleAction = delegate { AllowMergeGizmoToggleAction(renamableComp); }
+                toggleAction = delegate { allowMergeGizmoToggleAction(renamableComp); }
             };
         }
 
@@ -67,57 +67,29 @@ public static class RenameUtility
                 defaultLabel = "RenameEverything.RemoveName".Translate(),
                 defaultDesc = "RenameEverything.RemoveName_Description".Translate(filler),
                 icon = TexButton.DeleteX,
-                action = delegate { RemoveNameGizmoAction(renamableComp); }
+                action = delegate { removeNameGizmoAction(renamableComp); }
             };
         }
     }
 
     [SyncMethod]
-    private static void AllowMergeGizmoToggleAction(CompRenamable renamableComp)
+    private static void allowMergeGizmoToggleAction(CompRenamable renamableComp)
     {
         renamableComp.allowMerge = !renamableComp.allowMerge;
     }
 
     [SyncMethod]
-    private static void RemoveNameGizmoAction(CompRenamable renamableComp)
+    private static void removeNameGizmoAction(CompRenamable renamableComp)
     {
         renamableComp.Named = false;
     }
 
-    public static IEnumerable<CompRenamable> GetRenamableEquipmentComps(Pawn pawn)
-    {
-        if (pawn.equipment != null)
-        {
-            foreach (var item in pawn.equipment.AllEquipmentListForReading)
-            {
-                var comp = item.GetComp<CompRenamable>();
-                if (comp != null)
-                {
-                    yield return comp;
-                }
-            }
-        }
-
-        if (pawn.apparel == null)
-        {
-            yield break;
-        }
-
-        foreach (var item2 in pawn.apparel.WornApparel)
-        {
-            var comp2 = item2.GetComp<CompRenamable>();
-            if (comp2 != null)
-            {
-                yield return comp2;
-            }
-        }
-    }
-
     public static void ChangeGUIColourPreLabelDraw(IEnumerable<Thing> things)
     {
-        if (things.Count() == 1)
+        var enumerable = things as Thing[] ?? things.ToArray();
+        if (enumerable.Count() == 1)
         {
-            ChangeGUIColourPreLabelDraw(things.First());
+            ChangeGUIColourPreLabelDraw(enumerable.First());
         }
         else
         {
@@ -159,7 +131,7 @@ public static class RenameUtility
 
     public static void DrawThingName(Thing thing)
     {
-        if (!CanDrawThingName(thing, out var renamableComp))
+        if (!canDrawThingName(thing, out var renamableComp))
         {
             return;
         }
@@ -179,10 +151,10 @@ public static class RenameUtility
         Text.Font = GameFont.Small;
     }
 
-    public static bool CanDrawThingName(Thing t, out CompRenamable renamableComp)
+    private static bool canDrawThingName(Thing t, out CompRenamable renamableComp)
     {
         renamableComp = t.TryGetComp<CompRenamable>();
-        if (renamableComp is { Named: true } && RenameEverythingSettings.showNameOnGround)
+        if (renamableComp is { Named: true } && RenameEverythingSettings.ShowNameOnGround)
         {
             return !typeof(Building).IsAssignableFrom(t.GetType());
         }
@@ -192,6 +164,6 @@ public static class RenameUtility
 
     public static bool CanDrawThingName(Thing t)
     {
-        return CanDrawThingName(t, out _);
+        return canDrawThingName(t, out _);
     }
 }

@@ -15,14 +15,14 @@ public class Command_RemoveNameFloatMenu : Command_RenamablesFromPawn
                 if (renamable.Named)
                 {
                     yield return new FloatMenuOption(FloatMenuOptionLabel(pawnRenamablesPair.First, renamable.parent),
-                        delegate { RemoveNameAction(renamable); });
+                        delegate { removeNameAction(renamable); });
                 }
             }
         }
     }
 
-    [SyncMethod()]
-    private void RemoveNameAction(CompRenamable renamableComp)
+    [SyncMethod]
+    private static void removeNameAction(CompRenamable renamableComp)
     {
         renamableComp.Named = false;
     }

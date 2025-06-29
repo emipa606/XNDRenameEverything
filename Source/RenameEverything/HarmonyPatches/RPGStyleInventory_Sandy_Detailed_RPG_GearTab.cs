@@ -18,7 +18,7 @@ public static class RPGStyleInventory_Sandy_Detailed_RPG_GearTab
             typeof(Thing)
         ]);
         var doRenameFloatMenuButtonInfo =
-            AccessTools.Method(typeof(RPGStyleInventory_Sandy_Detailed_RPG_GearTab), nameof(DoRenameFloatMenuButton));
+            AccessTools.Method(typeof(RPGStyleInventory_Sandy_Detailed_RPG_GearTab), nameof(doRenameFloatMenuButton));
         foreach (var instruction in instructionList)
         {
             var codeInstruction = instruction;
@@ -34,7 +34,7 @@ public static class RPGStyleInventory_Sandy_Detailed_RPG_GearTab
         }
     }
 
-    private static void DoRenameFloatMenuButton(Rect rect, Thing thing)
+    private static void doRenameFloatMenuButton(Rect rect, Thing thing)
     {
         var compRenamable = thing.TryGetComp<CompRenamable>();
         if (compRenamable != null &&

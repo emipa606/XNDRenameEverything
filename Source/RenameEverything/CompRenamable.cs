@@ -86,8 +86,8 @@ public class CompRenamable : ThingComp
             return label;
         }
 
-        var appendCachedLabel = RenameEverythingSettings.appendCachedLabel &&
-                                (!RenameEverythingSettings.onlyAppendInThingHolder ||
+        var appendCachedLabel = RenameEverythingSettings.AppendCachedLabel &&
+                                (!RenameEverythingSettings.OnlyAppendInThingHolder ||
                                  ThingOwnerUtility.GetFirstSpawnedParentThing(parent) != parent);
         return Name + (appendCachedLabel ? $" ({cachedLabel.CapitalizeFirst()})" : string.Empty);
     }

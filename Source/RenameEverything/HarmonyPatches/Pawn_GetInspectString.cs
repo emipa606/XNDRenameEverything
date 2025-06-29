@@ -31,7 +31,7 @@ public static class Pawn_GetInspectString
 
     public static string AdjustedEquippedInspectString(string original, Pawn instance)
     {
-        if (!ModCompatibilityCheck.DualWield || !RenameEverythingSettings.dualWieldInspectString)
+        if (!ModCompatibilityCheck.DualWield || !RenameEverythingSettings.DualWieldInspectString)
         {
             return original;
         }

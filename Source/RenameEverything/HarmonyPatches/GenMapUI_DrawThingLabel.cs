@@ -15,9 +15,9 @@ public static class GenMapUI_DrawThingLabel
         var instructionList = instructions.ToList();
         var adjustPositionIfNamedInfo =
             AccessTools.Method(typeof(GenMapUI_DrawThingLabel), nameof(AdjustPositionIfNamed));
-        for (var i = 0; i < instructionList.Count; i++)
+        foreach (var instruction in instructionList)
         {
-            var codeInstruction = instructionList[i];
+            var codeInstruction = instruction;
             if (codeInstruction.opcode == OpCodes.Ldc_R4 && (float)codeInstruction.operand == -0.4f)
             {
                 yield return codeInstruction;

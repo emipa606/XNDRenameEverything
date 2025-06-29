@@ -9,7 +9,7 @@ namespace RenameEverything;
 public class Dialog_RenameThings : Window
 {
     private readonly List<CompRenamable> renamableComps;
-    protected string curName;
+    private string curName;
 
     private bool focusedRenameField;
 
@@ -40,18 +40,18 @@ public class Dialog_RenameThings : Window
         curName = renamableComp.Named ? renamableComp.Name : renamableComp.parent.LabelCapNoCount;
     }
 
-    protected int MaxNameLength => 28;
+    private static int MaxNameLength => 28;
 
     private bool AcceptsInput => startAcceptingInputAtFrame <= Time.frameCount;
 
-    public override Vector2 InitialSize => new Vector2(280f, 175f);
+    public override Vector2 InitialSize => new(280f, 175f);
 
     public void WasOpenedByHotkey()
     {
         startAcceptingInputAtFrame = Time.frameCount + 1;
     }
 
-    protected AcceptanceReport NameIsValid(string name)
+    private static AcceptanceReport nameIsValid(string name)
     {
         return name.Length != 0;
     }
@@ -68,13 +68,14 @@ public class Dialog_RenameThings : Window
 
         GUI.SetNextControlName("RenameField");
         var text = Widgets.TextField(new Rect(0f, 15f, inRect.width, 35f), curName);
-        if (AcceptsInput && text.Length < MaxNameLength)
+        switch (AcceptsInput)
         {
-            curName = text;
-        }
-        else if (!AcceptsInput)
-        {
-            ((TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl)).SelectAll();
+            case true when text.Length < MaxNameLength:
+                curName = text;
+                break;
+            case false:
+                ((TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl)).SelectAll();
+                break;
         }
 
         if (!focusedRenameField)
@@ -89,7 +90,7 @@ public class Dialog_RenameThings : Window
             return;
         }
 
-        var acceptanceReport = NameIsValid(curName);
+        var acceptanceReport = nameIsValid(curName);
         if (!acceptanceReport.Accepted)
         {
             if (acceptanceReport.Reason.NullOrEmpty())
@@ -102,13 +103,13 @@ public class Dialog_RenameThings : Window
         }
         else
         {
-            SetName(curName);
+            setName(curName);
             Find.WindowStack.TryRemove(this);
         }
     }
 
     [SyncMethod]
-    protected void SetName(string name)
+    private void setName(string name)
     {
         foreach (var renamableComp in renamableComps)
         {

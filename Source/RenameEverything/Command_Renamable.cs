@@ -13,20 +13,14 @@ public abstract class Command_Renamable : Command
     public override void ProcessInput(Event ev)
     {
         base.ProcessInput(ev);
-        if (renamables == null)
-        {
-            renamables = [];
-        }
+        renamables ??= [];
 
         renamables.Add(renamable);
     }
 
     public override bool InheritInteractionsFrom(Gizmo other)
     {
-        if (renamables == null)
-        {
-            renamables = [];
-        }
+        renamables ??= [];
 
         renamables.Add(((Command_Renamable)other).renamable);
         return false;

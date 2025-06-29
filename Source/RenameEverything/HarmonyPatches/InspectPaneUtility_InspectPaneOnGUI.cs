@@ -35,9 +35,9 @@ public static class InspectPaneUtility_InspectPaneOnGUI
                 {
                     yield return new CodeInstruction(OpCodes.Ldsfld, cachedSelectedThingsInfo);
                     yield return new CodeInstruction(OpCodes.Call,
-                        RenameUtility.ChangeGUIColourPreLabelDraw_IEnumerableThing_Info);
+                        RenameUtility.ChangeGUIColourPreLabelDrawIEnumerableThingInfo);
                     instructionList.Insert(i + 3,
-                        new CodeInstruction(OpCodes.Call, RenameUtility.ChangeGUIColourPostLabelDraw_Info));
+                        new CodeInstruction(OpCodes.Call, RenameUtility.ChangeGUIColourPostLabelDrawInfo));
                 }
             }
 

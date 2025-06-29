@@ -5,77 +5,77 @@ namespace RenameEverything;
 
 public class RenameEverythingSettings : ModSettings
 {
-    public static bool showNameOnGround = true;
+    public static bool ShowNameOnGround = true;
 
-    public static bool appendCachedLabel;
+    public static bool AppendCachedLabel;
 
-    public static bool onlyAppendInThingHolder = true;
+    public static bool OnlyAppendInThingHolder = true;
 
-    public static bool pawnWeaponRenameGizmos = true;
+    private static bool pawnWeaponRenameGizmos = true;
 
-    public static bool dualWieldInspectString = true;
+    public static bool DualWieldInspectString = true;
 
     public void DoWindowContents(Rect wrect)
     {
-        var listing_Standard = new Listing_Standard();
+        var listingStandard = new Listing_Standard();
         var color = GUI.color;
-        listing_Standard.Begin(wrect);
+        listingStandard.Begin(wrect);
         GUI.color = color;
         Text.Font = GameFont.Small;
         Text.Anchor = TextAnchor.UpperLeft;
-        listing_Standard.Gap();
-        listing_Standard.CheckboxLabeled("RenameEverything.ShowNameOnGround".Translate(), ref showNameOnGround,
+        listingStandard.Gap();
+        listingStandard.CheckboxLabeled("RenameEverything.ShowNameOnGround".Translate(), ref ShowNameOnGround,
             "RenameEverything.ShowNameOnGround_Tooltip".Translate());
-        listing_Standard.Gap();
-        listing_Standard.CheckboxLabeled("RenameEverything.AppendCachedLabel".Translate(), ref appendCachedLabel,
+        listingStandard.Gap();
+        listingStandard.CheckboxLabeled("RenameEverything.AppendCachedLabel".Translate(), ref AppendCachedLabel,
             "RenameEverything.AppendCachedLabel_Tooltip".Translate());
-        if (!appendCachedLabel)
+        if (!AppendCachedLabel)
         {
             GUI.color = Color.grey;
         }
 
-        listing_Standard.Gap();
-        listing_Standard.CheckboxLabeled("RenameEverything.AppendCachedLabelInThingHolder".Translate(),
-            ref onlyAppendInThingHolder, "RenameEverything.AppendCachedLabelInThingHolder_Tooltip".Translate());
+        listingStandard.Gap();
+        listingStandard.CheckboxLabeled("RenameEverything.AppendCachedLabelInThingHolder".Translate(),
+            ref OnlyAppendInThingHolder, "RenameEverything.AppendCachedLabelInThingHolder_Tooltip".Translate());
         GUI.color = color;
-        listing_Standard.Gap();
-        listing_Standard.CheckboxLabeled("RenameEverything.ShowRenameGizmosOnPawns".Translate(),
+        listingStandard.Gap();
+        listingStandard.CheckboxLabeled("RenameEverything.ShowRenameGizmosOnPawns".Translate(),
             ref pawnWeaponRenameGizmos, "RenameEverything.ShowRenameGizmosOnPawns_Tooltip".Translate());
         Text.Font = GameFont.Medium;
-        listing_Standard.Gap(24f);
-        listing_Standard.Label("RenameEverything.DualWieldIntegration".Translate());
+        listingStandard.Gap(24f);
+        listingStandard.Label("RenameEverything.DualWieldIntegration".Translate());
         Text.Font = GameFont.Small;
         if (!ModCompatibilityCheck.DualWield)
         {
             GUI.color = Color.grey;
-            listing_Standard.Label("RenameEverything.DualWieldNotActive".Translate());
+            listingStandard.Label("RenameEverything.DualWieldNotActive".Translate());
             GUI.color = color;
         }
         else
         {
-            listing_Standard.Gap();
-            listing_Standard.CheckboxLabeled("RenameEverything.ShowBothWeaponNamesDualWield".Translate(),
-                ref dualWieldInspectString, "RenameEverything.ShowBothWeaponNamesDualWield_Tooltip".Translate());
+            listingStandard.Gap();
+            listingStandard.CheckboxLabeled("RenameEverything.ShowBothWeaponNamesDualWield".Translate(),
+                ref DualWieldInspectString, "RenameEverything.ShowBothWeaponNamesDualWield_Tooltip".Translate());
         }
 
-        if (RenameEverything.currentVersion != null)
+        if (RenameEverything.CurrentVersion != null)
         {
-            listing_Standard.Gap();
+            listingStandard.Gap();
             GUI.contentColor = Color.gray;
-            listing_Standard.Label("RenameEverything.CurrentModVersion".Translate(RenameEverything.currentVersion));
+            listingStandard.Label("RenameEverything.CurrentModVersion".Translate(RenameEverything.CurrentVersion));
             GUI.contentColor = Color.white;
         }
 
-        listing_Standard.End();
+        listingStandard.End();
         Mod.GetSettings<RenameEverythingSettings>().Write();
     }
 
     public override void ExposeData()
     {
-        Scribe_Values.Look(ref showNameOnGround, "showNameOnGround", true);
-        Scribe_Values.Look(ref appendCachedLabel, "appendCachedLabel");
-        Scribe_Values.Look(ref onlyAppendInThingHolder, "onlyAppendInThingHolder", true);
+        Scribe_Values.Look(ref ShowNameOnGround, "showNameOnGround", true);
+        Scribe_Values.Look(ref AppendCachedLabel, "appendCachedLabel");
+        Scribe_Values.Look(ref OnlyAppendInThingHolder, "onlyAppendInThingHolder", true);
         Scribe_Values.Look(ref pawnWeaponRenameGizmos, "pawnWeaponRenameGizmos", true);
-        Scribe_Values.Look(ref dualWieldInspectString, "dualWieldInspectString", true);
+        Scribe_Values.Look(ref DualWieldInspectString, "dualWieldInspectString", true);
     }
 }

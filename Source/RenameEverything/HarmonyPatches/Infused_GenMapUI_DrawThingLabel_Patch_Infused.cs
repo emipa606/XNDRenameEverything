@@ -13,9 +13,9 @@ public static class Infused_GenMapUI_DrawThingLabel_Patch_Infused
         var adjustPositionIfNamedInfo =
             AccessTools.Method(typeof(GenMapUI_DrawThingLabel),
                 nameof(GenMapUI_DrawThingLabel.AdjustPositionIfNamed));
-        for (var i = 0; i < instructionList.Count; i++)
+        foreach (var instruction in instructionList)
         {
-            var codeInstruction = instructionList[i];
+            var codeInstruction = instruction;
             if (codeInstruction.opcode == OpCodes.Ldc_R4 && (float)codeInstruction.operand == -0.66f)
             {
                 yield return codeInstruction;

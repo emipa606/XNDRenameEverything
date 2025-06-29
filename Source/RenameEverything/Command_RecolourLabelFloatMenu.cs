@@ -18,14 +18,14 @@ public class Command_RecolourLabelFloatMenu : Command_RenamablesFromPawn
                     delegate
                     {
                         Find.WindowStack.Add(new Dialog_ColourPicker(renamable.labelColour,
-                            delegate(Color c) { Callback(c, renamable); }));
+                            delegate(Color c) { callback(c, renamable); }));
                     });
             }
         }
     }
 
-    [SyncMethod()]
-    private void Callback(Color c, CompRenamable renamableComp)
+    [SyncMethod]
+    private static void callback(Color c, CompRenamable renamableComp)
     {
         renamableComp.labelColour = c;
     }
