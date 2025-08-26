@@ -2,8 +2,14 @@
   "Continued": true,
   "CanAdd": "0",
   "CanRemove": "0",
-  "LastXmlCleaning": "2025-06-29T14:35:03.6673601+02:00",
+  "LastXmlCleaning": "2025-08-26T21:19:51.8454294+02:00",
   "SocialImageSet": true,
   "SearchTags": "object renaming",
-  "PreviewVersion": "1.6"
+  "PreviewVersion": "1.6",
+  "Patches": false,
+  "Defs": true,
+  "Assemblies": true,
+  "LinesOfCode": 46157,
+  "LinesOfXML": 796,
+  "CodeBaseSize": 73
 }
