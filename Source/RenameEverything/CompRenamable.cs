@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
 namespace RenameEverything;
 
-public class CompRenamable : ThingComp
+public class CompRenamable : ThingComp, IRenameable
 {
     private string _name = string.Empty;
 
@@ -21,7 +22,7 @@ public class CompRenamable : ThingComp
         {
             if (!_name.NullOrEmpty())
             {
-                return _name.ToLower() != cachedLabel.ToLower();
+                return !string.Equals(_name, cachedLabel, StringComparison.CurrentCultureIgnoreCase);
             }
 
             return false;
@@ -52,6 +53,16 @@ public class CompRenamable : ThingComp
             }
         }
     }
+
+    public string RenamableLabel
+    {
+        get => Named ? Name : parent.LabelCapNoCount;
+        set => _name = value;
+    }
+
+    public string BaseLabel => parent.LabelCapNoCount;
+
+    public string InspectLabel => RenamableLabel;
 
     public override bool Equals(object obj)
     {

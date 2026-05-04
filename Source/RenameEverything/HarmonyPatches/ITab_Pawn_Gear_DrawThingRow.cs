@@ -11,30 +11,24 @@ namespace RenameEverything;
 [HarmonyPatch(typeof(ITab_Pawn_Gear), "DrawThingRow")]
 public static class ITab_Pawn_Gear_DrawThingRow
 {
+    public static void Prefix(ref float y, out float __state)
+    {
+        __state = y;
+    }
+
+    public static void Postfix(float width, Thing thing, float __state)
+    {
+        doRenameFloatMenuButton(width, __state, thing);
+    }
+
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var instructionList = instructions.ToList();
         var wordWrapInfo = AccessTools.Property(typeof(Text), nameof(Text.WordWrap)).GetSetMethod();
         var wordWraps = 0;
-        var infoCardButtonInfo = AccessTools.Method(typeof(Widgets), nameof(Widgets.InfoCardButton), [
-            typeof(float),
-            typeof(float),
-            typeof(Thing)
-        ]);
-        var doRenameFloatMenuButtonInfo =
-            AccessTools.Method(typeof(ITab_Pawn_Gear_DrawThingRow), nameof(doRenameFloatMenuButton));
         foreach (var instruction in instructionList)
         {
             var codeInstruction = instruction;
-            if (codeInstruction.opcode == OpCodes.Call && codeInstruction.operand == infoCardButtonInfo)
-            {
-                yield return codeInstruction;
-                yield return new CodeInstruction(OpCodes.Ldloca_S, 0);
-                yield return new CodeInstruction(OpCodes.Ldarga_S, 1);
-                yield return new CodeInstruction(OpCodes.Ldarg_3);
-                codeInstruction = new CodeInstruction(OpCodes.Call, doRenameFloatMenuButtonInfo);
-            }
-
             if (codeInstruction.opcode == OpCodes.Call && codeInstruction.operand == wordWrapInfo)
             {
                 wordWraps++;
@@ -56,12 +50,15 @@ public static class ITab_Pawn_Gear_DrawThingRow
         }
     }
 
-    private static void doRenameFloatMenuButton(ref Rect rect, ref float y, Thing thing)
+    private static void doRenameFloatMenuButton(float width, float y, Thing thing)
     {
-        rect.width -= 24f;
-        var compRenamable = thing.TryGetComp<CompRenamable>();
-        if (compRenamable != null &&
-            Widgets.ButtonImage(new Rect(rect.width - 24f, rect.y + y, 24f, 24f), TexButton.RenameTex))
+        var compRenamable = thing.GetInnerIfMinified().TryGetComp<CompRenamable>();
+        if (compRenamable == null)
+        {
+            return;
+        }
+
+        if (Widgets.ButtonImage(new Rect(width - 72f, y, 24f, 24f), TexButton.RenameTex))
         {
             Find.WindowStack.Add(new FloatMenu(RenameUtility.CaravanRenameThingButtonFloatMenuOptions(compRenamable)
                 .ToList()));

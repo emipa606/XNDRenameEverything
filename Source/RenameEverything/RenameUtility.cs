@@ -115,7 +115,12 @@ public static class RenameUtility
     public static IEnumerable<FloatMenuOption> CaravanRenameThingButtonFloatMenuOptions(CompRenamable renamableComp)
     {
         yield return new FloatMenuOption(renamableComp.Props.renameTranslationKey.Translate(),
-            delegate { Find.WindowStack.Add(new Dialog_RenameThings(renamableComp)); });
+            delegate
+            {
+                var dialog = new Dialog_RenameThings(renamableComp);
+                dialog.WasOpenedByHotkey();
+                Find.WindowStack.Add(dialog);
+            });
         yield return new FloatMenuOption("RenameEverything.RecolourLabel".Translate(),
             delegate
             {

@@ -1,6 +1,18 @@
 <Solution>
+  <Folder Name="/.github/">
+    <File Path="../.github/copilot-instructions.md" />
+  </Folder>
   <Configurations>
     <BuildType Name="Release" />
   </Configurations>
   <Project Path="RenameEverything/RenameEverything.csproj" />
+  <Folder Name="/XML/1.6/Defs/SpecialThingFilterDefs/">
+    <File Path="../1.6/Defs/SpecialThingFilterDefs/SpecialThingFilters.xml" />
+  </Folder>
+  <Folder Name="/XML/About/">
+    <File Path="../About/about.xml" />
+  </Folder>
+  <Folder Name="/XML/Languages/English/Keyed/">
+    <File Path="../Languages/English/Keyed/Keys.xml" />
+  </Folder>
 </Solution>

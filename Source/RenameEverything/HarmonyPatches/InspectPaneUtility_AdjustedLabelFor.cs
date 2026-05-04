@@ -13,7 +13,7 @@ public static class InspectPaneUtility_AdjustedLabelFor
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var instructionList = instructions.ToList();
-        var clearInfo = AccessTools.Method(typeof(List<Thing>), nameof(List<Thing>.Clear));
+        var clearInfo = AccessTools.Method(typeof(List<Thing>), nameof(List<>.Clear));
         var clearCount = instructionList.Count(i => i.opcode == OpCodes.Callvirt && i.operand == clearInfo);
         var clearCounts = 0;
         var updateCachedSelectedThings =

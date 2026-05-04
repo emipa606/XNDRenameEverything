@@ -12,7 +12,12 @@ public class Command_RenameFloatMenu : Command_RenamablesFromPawn
             foreach (var renamable in pawnRenamablesPair.Second)
             {
                 yield return new FloatMenuOption(FloatMenuOptionLabel(pawnRenamablesPair.First, renamable.parent),
-                    delegate { Find.WindowStack.Add(new Dialog_RenameThings(renamable)); });
+                    delegate
+                    {
+                        var dialog = new Dialog_RenameThings(renamable);
+                        dialog.WasOpenedByHotkey();
+                        Find.WindowStack.Add(dialog);
+                    });
             }
         }
     }
