@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
+using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -8,49 +8,21 @@ using Verse;
 
 namespace RenameEverything;
 
-[HarmonyPatch(typeof(ITab_Pawn_Gear), "DrawThingRow")]
+[HarmonyPatch]
 public static class ITab_Pawn_Gear_DrawThingRow
 {
-    public static void Prefix(ref float y, out float __state)
+    public static IEnumerable<MethodBase> TargetMethods()
     {
-        __state = y;
-    }
-
-    public static void Postfix(float width, Thing thing, float __state)
-    {
-        doRenameFloatMenuButton(width, __state, thing);
-    }
-
-    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-    {
-        var instructionList = instructions.ToList();
-        var wordWrapInfo = AccessTools.Property(typeof(Text), nameof(Text.WordWrap)).GetSetMethod();
-        var wordWraps = 0;
-        foreach (var instruction in instructionList)
+        yield return AccessTools.Method(typeof(ITab_Pawn_Gear), "DrawThingRow");
+        if (!ModCompatibilityCheck.RPGStyleInventory)
         {
-            var codeInstruction = instruction;
-            if (codeInstruction.opcode == OpCodes.Call && codeInstruction.operand == wordWrapInfo)
-            {
-                wordWraps++;
-                yield return codeInstruction;
-                if (wordWraps % 2 == 0)
-                {
-                    codeInstruction =
-                        new CodeInstruction(OpCodes.Call, RenameUtility.ChangeGUIColourPostLabelDrawInfo);
-                }
-                else
-                {
-                    yield return new CodeInstruction(OpCodes.Ldarg_3);
-                    codeInstruction = new CodeInstruction(OpCodes.Call,
-                        RenameUtility.ChangeGUIColourPreLabelDrawThingInfo);
-                }
-            }
-
-            yield return codeInstruction;
+            yield break;
         }
+
+        yield return AccessTools.Method("Sandy_Detailed_RPG_GearTab:DrawThingRow");
     }
 
-    private static void doRenameFloatMenuButton(float width, float y, Thing thing)
+    public static void Prefix(Thing thing, float y, ref float width)
     {
         var compRenamable = thing.GetInnerIfMinified().TryGetComp<CompRenamable>();
         if (compRenamable == null)
@@ -58,10 +30,13 @@ public static class ITab_Pawn_Gear_DrawThingRow
             return;
         }
 
-        if (Widgets.ButtonImage(new Rect(width - 72f, y, 24f, 24f), TexButton.RenameTex))
+
+        if (Widgets.ButtonImage(new Rect(width - 24f, y, 24f, 24f), TexButton.RenameTex))
         {
             Find.WindowStack.Add(new FloatMenu(RenameUtility.CaravanRenameThingButtonFloatMenuOptions(compRenamable)
                 .ToList()));
         }
+
+        width -= 24f;
     }
 }

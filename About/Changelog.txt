@@ -1,5 +1,8 @@
 # Changelog for XNDRenameEverything
 
+1.6.3 - Fixed icon position and rpg style inventory patch
+
+
 1.6.2 - Now uses vanilla rename dialog class. Rename icon should be visible in inventory. Colorpicker should work better. Hotkey does not reset text.
 
 
